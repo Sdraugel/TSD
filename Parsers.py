@@ -66,6 +66,12 @@ class Parsers:
 
         	return new_excel_file_path
 
+        # This method will watch the folder and pass back a new file name when created
+        def folder_monitor(folderName):
+        	new_file_name = ""
+
+        	return new_file_name
+
 
 
         
