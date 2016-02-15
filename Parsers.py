@@ -52,13 +52,9 @@ class Parsers:
             # Call the tkinter function to replace excelFile
             new_file_path = repace_Excel_File()
             excel_file = open(new_file_path, 'r')
-
-        else :
-
             
-            
-        # Call the % output part of the program           
-        return tally(folderName, fileName, excelFile) 
+
+        return
 
         ## This method replaces the excel document file path with a new one, using a TKinter dialogue
         def repace_Excel_File():
@@ -72,10 +68,14 @@ class Parsers:
 
         	return new_file_name
 
+        # This method will parse the .rdy file and look for the machine name and the pass # (1 or 2)
+        # then pass it onto the graphics package
+        def parse_pass_fail():
+            machine_name = ""
+            pass_result = ""
 
+            UI(machine_name, pass_result)
 
-        
-
-    parser()
+        return
 
 
