@@ -11,7 +11,6 @@ class Parsers:
     def parser(folderName, fileName, excelFile):
         start = 0
         count = 0
-##        total = 1
         
         # The excel document's number of lines
         total_excel = 0 
@@ -38,7 +37,7 @@ class Parsers:
         pass_fail = linelist[19]
         machine_name = linelist[7]
 
-        parse_pass_fail(pass_fail, machine_name)
+        ##parse_pass_fail(pass_fail, machine_name)
 
 
         
@@ -48,19 +47,43 @@ class Parsers:
         total = (num_lines - 38) / 6
     
 
-        if (total < total_excel):
+        if (total != total_excel):
             # Call the tkinter function to replace excelFile
-            new_file_path = repace_Excel_File()
+            new_file_path = repaceFile(excel_file)
             excel_file = open(new_file_path, 'r')
             
 
-        return
+        return pass_fail, machine_name
 
+
+
+        def fileOpen():
+            root = Tk()
+            root.withdraw()
+            root.update()
+            filePath = askopenfilename(initialdir = "", filetypes = (("Excel Files", "*.xls"),("Excel Files","*.xlsm")),title = "Choose a new Excel File")
+            root.destroy()
+
+            return filePath
+        
         # This method replaces the excel document file path with a new one, using a TKinter dialogue
-        def repace_Excel_File():
-        	new_excel_file_path = ""
+        def replaceFile(excelDoc):
+            try:
+                book = xlrd.open_workbook(excelDoc)
+                first_sheet = book.sheet_by_index(0)
+                print (first_sheet.row_values(0))
+            except:
+                print("No File Exists")
 
-        	return new_excel_file_path
+            newFileDir = fileOpen()
+            try:
+                book = xlrd.open_workbook(excelDoc)
+                first_sheet = book.sheet_by_index(0)
+                print (first_sheet.row_values(0))
+            except:
+                print("No File Exists")
+
+            return newFileDir
 
         # This method will watch the folder and pass back a new file name when created
         def folder_monitor(folderName):
@@ -71,7 +94,7 @@ class Parsers:
         # This method will parse the .rdy file and look for the machine name and the pass # (1 or 2)
         # then pass it onto the graphics package
         def parse_pass_fail(passOrFail, machine):
-
+            
             
             machine_name = machine
             pass_result = passOrFail

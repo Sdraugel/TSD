@@ -1,5 +1,6 @@
 import Parsers
 import TSD_Graphics
+import tsd_GUI.py
 
 class TSD:
 
@@ -17,6 +18,9 @@ class TSD:
         # Predifined .xlsx file name
         excelFile = r"\20160122154835.xlsx"
 
+        #fileName = fileOpen()
+        
+        
         while(done != 1):
 
             if (wait_count > 5):
@@ -26,11 +30,13 @@ class TSD:
 
                 if (fileName != ""):
                     parser(folderName, fileName, excelFile)
-
+                    
                 else:
                     wait()
                     wait_count += 1
 
+        
+        
         return
 
 
