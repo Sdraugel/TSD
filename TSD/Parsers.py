@@ -11,7 +11,7 @@ class Parsers:
     def parser(folderName, fileName, excelFile):
         start = 0
         count = 0
-        total = 1
+##        total = 1
         
         # The excel document's number of lines
         total_excel = 0 
@@ -31,22 +31,22 @@ class Parsers:
         # length of excel file
         total_excel = len(excel_file.readlines()) 
         num_lines = sum(1 for line in open(fileName))
-
         linelist = f.readlines()
 
-        first = 9999
-        for i in range(len(linelist)):
-            if  (re.search(r"E\+\d\d\n|E\-\d\d\n", linelist[i]) or str(linelist[i]) == "Not Measured!\n" or str(linelist[i]) == "passed\n" or str(linelist[i])[0] == "-"):
-                count+=1
-                if i < first:
-                    first = i
-                    print(first)
 
+
+        pass_fail = linelist[19]
+        machine_name = linelist[7]
+
+        parse_pass_fail(pass_fail, machine_name)
+
+
+        
         f.close()
         
-        needed = num_lines - first
-        total = needed / 6
-        print(total)
+         
+        total = (num_lines - 38) / 6
+    
 
         if (total < total_excel):
             # Call the tkinter function to replace excelFile
@@ -56,7 +56,7 @@ class Parsers:
 
         return
 
-        ## This method replaces the excel document file path with a new one, using a TKinter dialogue
+        # This method replaces the excel document file path with a new one, using a TKinter dialogue
         def repace_Excel_File():
         	new_excel_file_path = ""
 
@@ -70,9 +70,11 @@ class Parsers:
 
         # This method will parse the .rdy file and look for the machine name and the pass # (1 or 2)
         # then pass it onto the graphics package
-        def parse_pass_fail():
-            machine_name = ""
-            pass_result = ""
+        def parse_pass_fail(passOrFail, machine):
+
+            
+            machine_name = machine
+            pass_result = passOrFail
 
             UI(machine_name, pass_result)
 

@@ -8,14 +8,14 @@ class TSD:
         wait_count = 0
 
         # Predifined folder location
-        folderName = ""
+        folderName = r'C:\Users\aaron.monahan\Documents\GitHub\CSCI462'
 
         # Predifined .rdy file name, eventually this will call a method in the parser program
         # that monitors the contents of the folderName
-        fileName = ""
+        fileName = r"\bh5nd64t56A2127B.RDY"
 
-        # Predifined .rdy file name
-        excelFile = ""
+        # Predifined .xlsx file name
+        excelFile = r"\20160122154835.xlsx"
 
         while(done != 1):
 
