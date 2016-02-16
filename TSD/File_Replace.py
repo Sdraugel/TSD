@@ -28,6 +28,16 @@ def replaceFile(excelDoc):
         print("No File Exists")
 
     return newFileDir
-        
 
+def countExcelRows(excelFile):
+    
+    book = xlrd.open_workbook(excelFile)
+    first_sheet = book.sheet_by_index(0)
+    return first_sheet.nrows
 
+def main():
+
+    file = fileOpen()
+    print(countExcelRows(file))
+
+main()

@@ -14,6 +14,7 @@ class TSD_Graphics:
         return
 
     # Method the recalculates the total percentage
+    ## are we looping through the entire RDY file and counting all the 1s and 2s?
     def calc_percent(machine_name, pass_type, current_machine_total_ones, current_machine_total_twos):
 
         if (pass_type == 1) :
