@@ -4,15 +4,11 @@ from win32com.client import Dispatch, constants
 
 class email:
 
-    def send_email():
+    def send_email(machine_name, threshold):
 
-        # ------- will need to be in the method parameter ------- #
-        machine_name = "sbs2000"
-        # ------------------------------------------------------- #
-        threshold = "90"
         SERVER = "9a8394cd-ddc2-4a3c-9433-3d6185c21c62@us.bosch.com"
         FROM = "fixed-term.Steven.Draugel@us.bosch.com"
-        TO = "fixed-term.Steven.Draugel@us.bosch.com" # must be a list
+        TO = "fixed-term.Steven.Draugel@us.bosch.com"
         SUBJECT = "Test Stand Diagnostics"
         TEXT = "Hello\n This is an email notification. Machine " + machine_name
         TEXT += "'s first pass percentage as fallen below the threshold of " + threshold
@@ -25,7 +21,11 @@ class email:
         newMail.Subject = SUBJECT
         newMail.Body = TEXT
         newMail.To = TO
+
+        # for debugging
         newMail.display()
+
+        # for runtime
         #newMail.Send()
 
-email.send_email()
+#email.send_email()
