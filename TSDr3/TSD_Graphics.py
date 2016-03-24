@@ -12,7 +12,7 @@ Debug = 0
 
 # draws two circles, one for each machine and displays current percentage in middle
 class TSD_Graphics: ##x,y = bottom left corner
-    def __init__(self,win,machine,x,y):
+    def __init__(self,win,machine,lastPass,x,y):
         if (Debug == 1):
             print("Initializing")
         
@@ -36,23 +36,25 @@ class TSD_Graphics: ##x,y = bottom left corner
             self.barArr.append(Rectangle(Point(i*5+self.x,self.y),Point((i+1)*25+self.x,self.val+self.y))) ##initialize array containing rectangle objects
             self.barArr[i].draw(self.win)
         
+        
+        self.circle = Circle(Point(250+self.x,300+self.y),190)
+        self.circle.setFill('white')
+        self.circle.draw(self.win)
+        
+        self.machine = machine
+        self.machineName = Text(Point(250+self.x,375 +self.y),machine + "\nTotal Runs: "+ str(self.count) )
+        self.machineName.draw(self.win)
+
         self.txt = Text(Point(250+self.x,295+self.y),"Initializing..." + "%")
         self.txt.setSize(36)
         self.txt.draw(self.win)
 
-        self.machine = machine
-        self.machineName = Text(Point(50+self.x,475 +self.y),machine + "\nTotal Runs: "+ str(self.count) )
-        self.machineName.draw(self.win)
-
-        self.circle = Circle(Point(250+self.x,300+self.y),190)
-        self.circle.setFill('white')
-        self.circle.draw(self.win)
+        self.lastPass = Text(Point(250+self.x,200 +self.y),"Last Pass:" + lastPass)
+        self.lastPass.draw(self.win)
 
         self.base = Line(Point(self.x,100 + self.y),Point(1000+ self.x,100 + self.y))
         self.base.setFill('green')
         self.base.draw(self.win)
-
-        self.resetButton = button(Point(50+self.x,140+self.y),"reset",'gray',50,20,win)
 
         if (Debug == 1):
             print("Finished initializing")
@@ -63,6 +65,12 @@ class TSD_Graphics: ##x,y = bottom left corner
             print("Get name called")
         
         return self.machine
+
+    def getPercentage(self):
+         if (Debug == 1):
+            print("getPercentage called")
+        
+         return round((self.totalPass / self.count)* 100, 2)
     
     def update(self,passFail):
         global EMAIL_62
@@ -118,6 +126,7 @@ class TSD_Graphics: ##x,y = bottom left corner
             self.circle.undraw()
             self.txt.undraw()
             self.machineName.undraw()
+            self.lastPass.undraw()
         
             self.circle.setFill(color)
             self.txt.setText(str(self.val)+"%")
@@ -126,6 +135,7 @@ class TSD_Graphics: ##x,y = bottom left corner
             self.circle.draw(self.win)
             self.txt.draw(self.win)
             self.machineName.draw(self.win)
+            self.lastPass.draw(self.win)
             self.count += 1
             
     def reset(self):

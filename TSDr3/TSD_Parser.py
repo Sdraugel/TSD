@@ -8,6 +8,7 @@ from tkinter.filedialog import askdirectory
 import time
 
 import TSD_Graphics
+from TSD_Record import *
 from TSD_Testing import *
 
 Debug = 0
@@ -22,13 +23,25 @@ class TSD_Parser:
     ## constructor that pulls up two subsequent file directory windows to initialize RDY and config files
     ## also instantiates one graphics window and two TSD_Graphics objects, one for each machine
     def __init__(self,machine1,machine2):
+
+        fo = open("TSD_Record.txt", "r")
+        record = fo.readlines()
+        record1 = ""
+        record2 = ""
+        for i in range(0,4):
+            record1+= record[i]
+        for i in range(5,9):
+            record2+= record[i]
+        fo.close()
+        
+        self.tsd_record = TSD_Record()
         
         self.rdyFile = rdyOpen()
         self.folder = dirOpen()
         self.excelFile = excelOpen()
         self.win = GraphWin("Test Stand Diagnostics", 1270,600)
-        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,30,0)
-        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,530,0)
+        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,30,0)
+        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,record2,530,0)
         if (Debug == 1):
             print("initializing parser")
         
@@ -126,6 +139,20 @@ class TSD_Parser:
         file_path.close()
         #print("pass/fail value = " + str(linelist[19]))
         return int(linelist[19])
+
+    def getPartNumber(self):
+
+        file_path = open(self.rdyFile, 'r')
+        partNumber = ""
+        linelist = file_path.readlines()
+        for zipplyzoops in linelist[4]:
+            if zipplyzoops != '\n':
+                partNumber += zipplyzoops
+        if (Debug == 1):
+            print("getPartNumber")
+        
+        return partNumber
+
     
     # opens file directory window to replace current excel config
     def replaceExcel(self):
@@ -158,8 +185,11 @@ class TSD_Parser:
     def update(self):
         if(self.getMachineName() == self.machine1.getName()): # check which machine name matches with the one in RDY file
             self.machine1.update(self.getPassFail())
+            self.tsd_record.updateRecord1(self.getMachineName(),self.getPartNumber(),self.machine1.getPercentage())
         elif(self.getMachineName() == self.machine2.getName()):
             self.machine2.update(self.getPassFail())
+            self.tsd_record.updateRecord2(self.getMachineName(),self.getPartNumber(),self.machine2.getPercentage())
+
         else:
             print ("Error! Machine name, " + self.getMachineName() + " does not match existing machine names!")
 
