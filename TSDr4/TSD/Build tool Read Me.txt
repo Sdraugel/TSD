@@ -1,0 +1,4 @@
+running the python.exe builder
+
+command1: cd Desktop\Test_Stand_Diagnostics_Program\TSD
+command2: python setup1.py TSD_Main.py
