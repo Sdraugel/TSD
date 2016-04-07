@@ -15,6 +15,7 @@ def main():
         if(tsd.checkNewRDY()):
             tsd.getNewRDY()
             tsd.checkMatch()
+            tsd.priorityCheck()
             tsd.update()
             tsd.delRDY()
     main()

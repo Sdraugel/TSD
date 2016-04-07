@@ -40,6 +40,7 @@ class TSD_Parser:
         self.rdyFile = rdyOpen()
         self.folder = dirOpen()
         self.excelFile = excelOpen()
+        self.priorityFile = excelOpen()
         self.win = GraphWin("Test Stand Diagnostics", GetSystemMetrics(0),GetSystemMetrics(0)/2)
         self.win.setBackground('white')
         self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,0,0)
@@ -214,7 +215,33 @@ class TSD_Parser:
         else:
             print ("Error! Machine name, " + self.getMachineName() + " does not match existing machine names!")
 
+    def priorityCheck(self):
+        prioritybook = xlrd.open_workbook(self.priorityFile)
+        configbook = xlrd.open_workbook(self.excelFile)
 
+        pb = prioritybook.sheet_by_index(0)
+        priorityList = []
+
+        for i in range(2 , pb.nrows-1 , 1):
+            priorityList.append(pb.cell(i,0).value)
+
+
+        cb = configbook.sheet_by_index(0)
+        configList = []
+
+        for i in range(1 , cb.nrows , 1):
+            sub = cb.cell(i,15).value
+            configList.append(sub[3:])
+
+        if set(priorityList) != set(configList):
+            newFile = excelOpen()
+              self.priorityFile = newFile
+            prioritybook = xlrd.open_workbook(self.priorityFile)
+        print("Error: Priority and Configuration files do not match.")
+        
+        #NEEDS WORK
+        #What to do if config and priority dont match
+        
 def excelOpen():
     root = Tk()
     root.withdraw()
