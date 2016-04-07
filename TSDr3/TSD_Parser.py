@@ -2,6 +2,7 @@ import os
 import shutil
 import xlrd
 from graphics import *
+from win32api import GetSystemMetrics
 from tkinter import Tk
 from tkinter.filedialog import askopenfilename
 from tkinter.filedialog import askdirectory
@@ -39,9 +40,11 @@ class TSD_Parser:
         self.rdyFile = rdyOpen()
         self.folder = dirOpen()
         self.excelFile = excelOpen()
-        self.win = GraphWin("Test Stand Diagnostics", 1270,600)
-        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,30,0)
-        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,record2,530,0)
+        self.win = GraphWin("Test Stand Diagnostics", GetSystemMetrics(0),GetSystemMetrics(0)/2)
+        self.win.setBackground('white')
+        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,0,0)
+        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,record2,500,0)
+        self.failList = []
         if (Debug == 1):
             print("initializing parser")
         
@@ -153,6 +156,22 @@ class TSD_Parser:
         
         return partNumber
 
+    def checkTestPoints(self):
+        failList = []
+        count = 0
+        file_path = open(self.rdyFile, 'r')
+        linelist = file_path.readlines()
+
+        book = xlrd.open_workbook(self.excelFile)
+        first_sheet = book.sheet_by_index(0)
+        
+        for i in range(42,len(linelist),6):
+            #print(first_sheet.cell(count,15).value + " " + first_sheet.cell(count,17).value +": " + linelist[i])
+            count += 1
+            if (int(linelist[i]) > 1):
+                self.failList.append(str(first_sheet.cell(count,15).value)+ " " + str(first_sheet.cell(count,17).value) + "\n" + str(first_sheet.cell(count,18).value))
+        #print ("Number of test points: " + str(count))
+
     
     # opens file directory window to replace current excel config
     def replaceExcel(self):
@@ -184,10 +203,12 @@ class TSD_Parser:
     #check machine name and update that machine circle in GUI class with a pass/fail value
     def update(self):
         if(self.getMachineName() == self.machine1.getName()): # check which machine name matches with the one in RDY file
-            self.machine1.update(self.getPassFail())
+            self.checkTestPoints()
+            self.machine1.update(self.getPassFail(),self.getPartNumber(),self.failList)
             self.tsd_record.updateRecord1(self.getMachineName(),self.getPartNumber(),self.machine1.getPercentage())
         elif(self.getMachineName() == self.machine2.getName()):
-            self.machine2.update(self.getPassFail())
+            self.checkTestPoints()
+            self.machine2.update(self.getPassFail(),self.getPartNumber(),self.failList)
             self.tsd_record.updateRecord2(self.getMachineName(),self.getPartNumber(),self.machine2.getPercentage())
 
         else:
@@ -221,4 +242,7 @@ def rdyOpen():
     root.destroy()
 
     return filePath
+
+
+
             

@@ -1,7 +1,8 @@
 from graphics import *
 import time
-
+from TSD_Record import *
 from TSD_Email import *
+from win32api import GetSystemMetrics
 
 THRESHOLD_FAIL_PERCENTAGE = 94
 THRESHOLD_WARNING_PERCENTAGE = 97
@@ -17,6 +18,7 @@ class TSD_Graphics: ##x,y = bottom left corner
             print("Initializing")
         
         self.win = win
+        win.setBackground('light grey')
         win.setCoords(0,0,1000,500)
         self.machine = machine
         self.x = x
@@ -28,31 +30,45 @@ class TSD_Graphics: ##x,y = bottom left corner
         self.start = time.time()
         
         self.valArr = []
-        for i in range(0,99): ##initialize array holding values past 100 values (queue-like structure)
+        for i in range(0,199): ##initialize array holding values past 100 values (queue-like structure)
             self.valArr.append(0)
             
         self.barArr = [] ##array containing rectangle objects
-        for i in range(0,99):
-            self.barArr.append(Rectangle(Point(i*5+self.x,self.y),Point((i+1)*25+self.x,self.val+self.y))) ##initialize array containing rectangle objects
+        for i in range(0,199):
+            self.barArr.append(Rectangle(Point(i*2+self.x,self.y),Point((i+1)*2+self.x,self.val+self.y))) ##initialize array containing rectangle objects
             self.barArr[i].draw(self.win)
+            
         
+        self.back = Rectangle(Point(self.x,self.y),Point(500+self.x,70+self.y))
+        self.back.setFill('black')
+        self.back.draw(self.win)
         
-        self.circle = Circle(Point(250+self.x,300+self.y),190)
+        self.circle = Circle(Point(250+self.x,340+self.y),150)
         self.circle.setFill('white')
         self.circle.draw(self.win)
+
+        self.rect = Rectangle(Point(10 + self.x,80+self.y),Point(490+self.x,170+self.y))
+        self.rect.setFill('grey')
+        self.rect.setOutline('white')
+        self.rect.draw(self.win)
         
         self.machine = machine
-        self.machineName = Text(Point(250+self.x,375 +self.y),machine + "\nTotal Runs: "+ str(self.count) )
+        self.machineName = Text(Point(80+self.x,120 +self.y),machine + "\nTotal Runs: "+ str(self.count) )
+        self.machineName.setSize(8)
         self.machineName.draw(self.win)
 
-        self.txt = Text(Point(250+self.x,295+self.y),"Initializing..." + "%")
+        self.txt = Text(Point(250+self.x,340+self.y),"Initializing..." + "%")
         self.txt.setSize(36)
         self.txt.draw(self.win)
 
-        self.lastPass = Text(Point(250+self.x,200 +self.y),"Last Pass:" + lastPass)
+        self.lastPass = Text(Point(430+self.x,120 +self.y),"Last Test:\n" + lastPass)
+        self.lastPass.setSize(8)
         self.lastPass.draw(self.win)
 
-        self.base = Line(Point(self.x,100 + self.y),Point(1000+ self.x,100 + self.y))
+        self.failures = Text(Point(250+self.x,125 +self.y),"Recent Failures:\n")
+        self.failures.draw(self.win)
+
+        self.base = Line(Point(self.x,70 + self.y),Point(500+ self.x,70 + self.y))
         self.base.setFill('green')
         self.base.draw(self.win)
 
@@ -72,7 +88,7 @@ class TSD_Graphics: ##x,y = bottom left corner
         
          return round((self.totalPass / self.count)* 100, 2)
     
-    def update(self,passFail):
+    def update(self,passFail,partNum,failList):
         global EMAIL_62
         global EMAIL_64
         global WARNING_COUNT
@@ -117,25 +133,28 @@ class TSD_Graphics: ##x,y = bottom left corner
             self.valArr.append(self.val) ##add current value to end of list
             color = getColor(self.val) 
 
-            for i in range(0,99):
+            for i in range(0,198):
                 self.barArr[i].undraw()
-                self.barArr[i] = (Rectangle(Point(i*5+self.x,self.y),Point((i+1)*5+self.x,self.valArr[i]+self.y)))
-                self.barArr[i].setFill(getColor(self.valArr[i]))
+                self.barArr[i] = Line(Point(i*2.5+self.x,(self.valArr[i]+self.y)*5-430),Point((i+1)*2.5+self.x,(self.valArr[i+1]+self.y)*5-430))
+                self.barArr[i].setFill('red')
                 self.barArr[i].draw(self.win)
 
             self.circle.undraw()
             self.txt.undraw()
             self.machineName.undraw()
             self.lastPass.undraw()
-        
+            self.failures.undraw()
+            if (len(failList) > 1):
+                self.failures.setText("Recent Failures:\n\n" + str(failList[len(failList)-1] ) + "\n\n" + str(failList[len(failList)-2]))
             self.circle.setFill(color)
             self.txt.setText(str(self.val)+"%")
-            self.machineName.setText(self.machine + "\nTotal Runs: "+ str(self.count) + "\nUptime: " + timeHourMin((time.time() - self.start)/60))
+            self.machineName.setText("Current Test:\n" +self.machine + "\n" + partNum + "\nTotal Runs: "+ str(self.count) + "\nUptime: " + timeHourMin((time.time() - self.start)/60))
         
             self.circle.draw(self.win)
             self.txt.draw(self.win)
             self.machineName.draw(self.win)
             self.lastPass.draw(self.win)
+            self.failures.draw(self.win)
             self.count += 1
             
     def reset(self):
@@ -148,12 +167,12 @@ class TSD_Graphics: ##x,y = bottom left corner
         self.start = time.time()
         
         self.valArr = []
-        for i in range(0,99): 
+        for i in range(0,199): 
             self.valArr.append(0)
             
-        for i in range(0,99):
+        for i in range(0,199):
             self.barArr[i].undraw()
-            self.barArr[i] = (Rectangle(Point(i*5,0),Point((i+1)*5,self.valArr[i])))
+            self.barArr[i] = (Rectangle(Point(i*2,0),Point((i+1)*2,self.valArr[i])))
             self.barArr[i].setFill(getColor(self.valArr[i]))
             self.barArr[i].draw(self.win)
 
@@ -168,6 +187,16 @@ class TSD_Graphics: ##x,y = bottom left corner
         self.circle.draw(self.win)
         self.txt.draw(self.win)
         self.machineName.draw(self.win)
+
+    def showFails(self,failList):
+        if (len(failList) < 1):
+            return None
+        else:
+            winList = []
+            for i in range(len(failList)):
+                winList.append(GraphWin("Test Stand Failure", 300,100))
+                Text(Point(150,50),failList[i]).draw(winList[i])
+                
 
         #additional functions for graphics class
 def button(cenPt, label, color, width, height, window):
@@ -212,3 +241,8 @@ def timeHourMin(minutes):
     h = str(int(minutes // 60))
     m = str(int(minutes % 60))
     return (h + " Hours, " + m + " Minutes")
+
+#win = GraphWin("Test Stand Diagnostics", 1200,600)
+#machine1 = TSD_Graphics(win,"TS200","record",0,0)
+#machine2 = TSD_Graphics(win,"TS200 B","record",500,0)
+        

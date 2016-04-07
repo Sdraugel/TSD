@@ -24,7 +24,7 @@ class TSD_Record:
         self.time1 = str(time.asctime( time.localtime(time.time()) ))
 
         fo = open("TSD_Record.txt", "w+")
-        fo.write("%s\n%s\n%s\n%s\n\n%s\n%s\n%s\n%s\n" % (self.machine1Name,self.partNumber1,self.percentage1,self.time1,self.machine2Name,self.partNumber2,self.percentage2,self.time2))
+        fo.write("%s\n%s\n%s\n%s\n\n%s\n%s\n%s%%\n%s\n" % (self.machine1Name,self.partNumber1,self.percentage1,self.time1,self.machine2Name,self.partNumber2,self.percentage2,self.time2))
         fo.close()
 
     def updateRecord2(self,machine2Name,partNumber2,percentage2):
@@ -34,7 +34,7 @@ class TSD_Record:
         self.time2 = str(time.asctime( time.localtime(time.time()) ))
 
         fo = open("TSD_Record.txt", "w+")
-        fo.write("%s\n%s\n%s\n%s\n\n%s\n%s\n%s\n%s\n" % (self.machine1Name,self.partNumber1,self.percentage1,self.time1,self.machine2Name,self.partNumber2,self.percentage2,self.time2))
+        fo.write("%s\n%s\n%s\n%s\n\n%s\n%s\n%s%%\n%s\n" % (self.machine1Name,self.partNumber1,self.percentage1,self.time1,self.machine2Name,self.partNumber2,self.percentage2,self.time2))
         fo.close()
         
 
