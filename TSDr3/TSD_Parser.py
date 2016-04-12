@@ -223,9 +223,13 @@ class TSD_Parser:
         priorityList = []
 
         for i in range(2 , pb.nrows-1 , 1):
-            priorityList.append(pb.cell(i,0).value)
-
-
+            sub1 = pb.cell(i,0).value
+            priorityList.append(sub1[3:])
+            
+            #priorityList.append(pb.cell(i,0).value)
+            #KEEP THIS ^
+        prioritySet = set(priorityList)
+        
         cb = configbook.sheet_by_index(0)
         configList = []
 
@@ -233,11 +237,17 @@ class TSD_Parser:
             sub = cb.cell(i,15).value
             configList.append(sub[3:])
 
-        if set(priorityList) != set(configList):
-            newFile = excelOpen()
-              self.priorityFile = newFile
-            prioritybook = xlrd.open_workbook(self.priorityFile)
-        print("Error: Priority and Configuration files do not match.")
+        configSet = set(configList)
+
+
+        chooseNewPriority()
+        
+        #if prioritySet != configSet:
+        #if set(priorityList) != set(configList):
+        #    newFile = excelOpen()
+        #    self.priorityFile = newFile
+        #    prioritybook = xlrd.open_workbook(self.priorityFile)
+        #    print("Error: Priority and Configuration files do not match.")
         
         #NEEDS WORK
         #What to do if config and priority dont match
