@@ -8,7 +8,7 @@ from tkinter.filedialog import askopenfilename
 from tkinter.filedialog import askdirectory
 import time
 
-import TSD_Graphics
+from TSD_Graphics import *
 from TSD_Record import *
 from TSD_Testing import *
 
@@ -25,27 +25,45 @@ class TSD_Parser:
     ## also instantiates one graphics window and two TSD_Graphics objects, one for each machine
     def __init__(self,machine1,machine2):
 
-        fo = open("TSD_Record.txt", "r")
-        record = fo.readlines()
+        fo1 = open("Records\\TSD_Record1.txt", "r")
+        records1 = fo1.readlines()
         record1 = ""
+        fo2 = open("Records\\TSD_Record2.txt", "r")
+        records2 = fo2.readlines()
         record2 = ""
         for i in range(0,4):
-            record1+= record[i]
-        for i in range(5,9):
-            record2+= record[i]
-        fo.close()
+            record1+= records1[i]
+            record2+= records2[i]
+        fo1.close()
+        fo2.close()
         
         self.tsd_record = TSD_Record()
         
         self.rdyFile = rdyOpen()
+
+        
+        file_path = open(self.rdyFile, 'r')
+        partNumber = ""
+        linelist = file_path.readlines()
+        for zipplyzoops in linelist[4]:
+            if zipplyzoops != '\n':
+                partNumber += zipplyzoops
+        self.partNumber = partNumber
+
+        
         self.folder = dirOpen()
         self.excelFile = excelOpen()
-        self.priorityFile = excelOpen()
-        self.win = GraphWin("Test Stand Diagnostics", GetSystemMetrics(0),GetSystemMetrics(0)/2)
-        self.win.setBackground('white')
-        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,0,0)
-        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,record2,500,0)
-        self.failList = []
+        self.failList = None
+##        old init
+##        self.win = GraphWin("Test Stand Diagnostics", GetSystemMetrics(0),GetSystemMetrics(0)/2)
+##        self.win.setBackground('white')
+##        self.machine1 = TSD_Graphics.TSD_Graphics(self.win,machine1,record1,0,0)
+##        self.machine2 = TSD_Graphics.TSD_Graphics(self.win,machine2,record2,500,0)
+        # new init
+        self.init = graphics_init()
+        self.machine1 = TSD_Graphics(self.init,machine1,self.partNumber,record1,0,0)
+        self.machine2 = TSD_Graphics(self.init,machine2,self.partNumber,record2,500,0)
+        
         if (Debug == 1):
             print("initializing parser")
         
@@ -154,6 +172,8 @@ class TSD_Parser:
                 partNumber += zipplyzoops
         if (Debug == 1):
             print("getPartNumber")
+
+        self.partNumber = partNumber
         
         return partNumber
 
@@ -170,7 +190,7 @@ class TSD_Parser:
             #print(first_sheet.cell(count,15).value + " " + first_sheet.cell(count,17).value +": " + linelist[i])
             count += 1
             if (int(linelist[i]) > 1):
-                self.failList.append(str(first_sheet.cell(count,15).value)+ " " + str(first_sheet.cell(count,17).value) + "\n" + str(first_sheet.cell(count,18).value))
+                self.failList = str(first_sheet.cell(count,15).value)
         #print ("Number of test points: " + str(count))
 
     
@@ -214,44 +234,10 @@ class TSD_Parser:
 
         else:
             print ("Error! Machine name, " + self.getMachineName() + " does not match existing machine names!")
-
-    def priorityCheck(self):
-        prioritybook = xlrd.open_workbook(self.priorityFile)
-        configbook = xlrd.open_workbook(self.excelFile)
-
-        pb = prioritybook.sheet_by_index(0)
-        priorityList = []
-
-        for i in range(2 , pb.nrows-1 , 1):
-            sub1 = pb.cell(i,0).value
-            priorityList.append(sub1[3:])
-            
-            #priorityList.append(pb.cell(i,0).value)
-            #KEEP THIS ^
-        prioritySet = set(priorityList)
-        
-        cb = configbook.sheet_by_index(0)
-        configList = []
-
-        for i in range(1 , cb.nrows , 1):
-            sub = cb.cell(i,15).value
-            configList.append(sub[3:])
-
-        configSet = set(configList)
+        self.init[0].update()
+        self.failList = None
 
 
-        chooseNewPriority()
-        
-        #if prioritySet != configSet:
-        #if set(priorityList) != set(configList):
-        #    newFile = excelOpen()
-        #    self.priorityFile = newFile
-        #    prioritybook = xlrd.open_workbook(self.priorityFile)
-        #    print("Error: Priority and Configuration files do not match.")
-        
-        #NEEDS WORK
-        #What to do if config and priority dont match
-        
 def excelOpen():
     root = Tk()
     root.withdraw()
