@@ -34,7 +34,7 @@ class TSD_Email:
         newMail.To = TO
 
         # for debugging
-        #newMail.display()
+        newMail.display()
 
         # for runtime
         #newMail.Send()

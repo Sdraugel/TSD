@@ -121,7 +121,7 @@ class TSD_Graphics:
         self.failList.heading("#0",text="Time")
         self.failList.heading("one",text="Failure")
         self.failList.heading("two",text="Recommended Fix")
-        self.failList.insert("",0, text="13:30:05", values=("it not working","is it plugged in?"))
+        self.failList.insert("",0, text="13:30:05", values=("Initializing...","Initializing..."))
         self.failList.pack(side = LEFT)
 
         print("Line Name: " + self.lineName)
@@ -217,7 +217,7 @@ def getColor(var):
         color = 'green'
     return color
 
-def getFix(failure): ##placeholder function
+def getFix(failure):
     returned_value = ""
     for char in failure:
         if char == ",":
