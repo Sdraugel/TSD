@@ -1,6 +1,6 @@
 {
   "name": "Csci462",
   "tagline": "",
-  "body": "### Welcome to the TSD repository\r\n\r\n### To run the project you need to:\r\n+ download the zip\r\n+ unpack and locate install.bat\r\n+ run install.bat (it will install all of the required software)\r\n+ locate the TSD project in your C directory\r\n+ run the exe\r\n\r\n### Required software:\r\n+ Python 2.7 or higher\r\n+ Windows 7",
+  "body": "### Welcome to the TSD repository\r\n\r\n### To run the project you need to:\r\n+ download the zip\r\n+ unpack and locate install.bat in the TSD installation folder (you can also just copy the dist folder to anywhere you want)\r\n+ run install.bat (it will install all of the required software)\r\n+ locate the TSD project in your C directory\r\n+ run the exe\r\n\r\n### Required software:\r\n+ Python 2.7 or higher\r\n+ Windows 7",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
