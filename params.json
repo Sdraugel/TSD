@@ -1,6 +1,6 @@
 {
   "name": "Csci462",
   "tagline": "",
-  "body": "### Welcome to the personal repository for Steven Draugel.\r\nHere I will keep all of the projects I am a part of.\r\n\r\n",
+  "body": "### Welcome to the TSD repository\r\n\r\n### To run the project you need to:\r\n+ download the zip\r\n+ unpack and locate install.bat\r\n+ run install.bat (it will install all of the required software)\r\n+ locate the TSD project in your C directory\r\n+ run the exe\r\n\r\n### Required software:\r\n+ Python 2.7 or higher\r\n+ Windows 7",
   "note": "Don't delete this file! It's used internally to help with page regeneration."
 }
