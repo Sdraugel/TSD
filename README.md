@@ -25,11 +25,11 @@ This software is for a specific industrial system. The Test Stand Diagnostics is
 ## Credits
 
 * Steven Draugel
- * Developer -- https://github.com/Sdraugel
+  * Developer -- https://github.com/Sdraugel
 * Aaron Monahan
- * Developer -- 
+  * Developer -- 
 * John Parreno
- * Developer -- 
+  * Developer -- 
 
 ## License
 
