@@ -8,7 +8,8 @@ This piece of software was designed to:
 ## Installation
 
 * Download and install Python
-  * You may need to install the Python graphics package 
+  * You may need to install the Python graphics package
+* For more detailed information see https://github.com/Sdraugel/TSD/blob/master/Documentation/TSDSRSDocument.docx
 
 ## Usage
 
