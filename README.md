@@ -27,10 +27,10 @@ This software is for a specific industrial system. The Test Stand Diagnostics is
 * Steven Draugel
   * Developer -- https://github.com/Sdraugel
 * Aaron Monahan
-  * Developer -- 
+  * Developer -- https://github.com/aaron-monahan
 * John Parreno
-  * Developer -- 
+  * Developer -- https://github.com/jparreno
 
 ## License
 
-TODO: Write license
+Licensed to Steven Draugel, Aaron Monahan, John Parreno, The College of Charleston, and Bosh. All others may use code written her with credit given to the source.
