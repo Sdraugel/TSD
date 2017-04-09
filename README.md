@@ -1,9 +1,9 @@
 # TSD (Test Stand Diagnostics)
 
-This piece of software was designed to 
-1. Track the first pass percentage of the Anti-Lock Braking System (ABS) as they are tested.
-2. Notify test engineers via email when the average percentage drops below a certain threshold.
-3. Once a part has been tested and shown failure, the software will diagnose the problem by parsing the data from the test sensors and display the solution to the engineer.
+This piece of software was designed to: 
+ 1. Track the first pass percentage of the Anti-Lock Braking System (ABS) as they are tested.
+ 2. Notify test engineers via email when the average percentage drops below a certain threshold.
+ 3. Once a part has been tested and shown failure, the software will diagnose the problem by parsing the data from the test sensors and display the solution to the engineer.
 
 ## Installation
 
@@ -12,7 +12,7 @@ This piece of software was designed to
 
 ## Usage
 
-TODO: Write usage instructions
+This software is for a specific industrial system. The Test Stand Diagnostics is a system monitoring tool. The software is implemented in an industrial manufacturing facility, which is fully automated (robotic), and diagnosis issues that occur in the final phase of the part creation. The sole use of this tool is for the project partners, Bosch, to use on their testing systems. 
 
 ## Contributing
 
