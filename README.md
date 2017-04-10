@@ -34,4 +34,4 @@ This software is for a specific industrial system. The Test Stand Diagnostics is
 
 ## License
 
-Licensed to Steven Draugel, Aaron Monahan, John Parreno, The College of Charleston, and Bosh. All others may use code written her with credit given to the source.
+Licensed to Steven Draugel, Aaron Monahan, John Parreno, The College of Charleston, and Bosh. All others may use code written here with credit given to this source.
