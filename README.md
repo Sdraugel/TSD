@@ -23,15 +23,10 @@ This software is for a specific industrial system. The Test Stand Diagnostics is
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
-## Credits
+## Contact
 
-* Steven Draugel
-  * Developer -- https://github.com/Sdraugel
-* Aaron Monahan
-  * Developer -- https://github.com/aaron-monahan
-* John Parreno
-  * Developer -- https://github.com/jparreno
+* Steven Draugel -- https://github.com/Sdraugel
 
 ## License
 
-Licensed to Steven Draugel, Aaron Monahan, John Parreno, The College of Charleston, and Bosh. All others may use code written here with credit given to this source.
+Licensed to Steven Draugel. All others may use code written here with credit given to this source.
